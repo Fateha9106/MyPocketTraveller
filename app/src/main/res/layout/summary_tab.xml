@@ -102,7 +102,7 @@
         <ListView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/summaryLookBackList"
+            android:id="@id/android:list"
             android:divider="#5d4037"
             android:dividerHeight="2dp">
 

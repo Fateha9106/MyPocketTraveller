@@ -29,19 +29,13 @@ public class HistoryTab extends ListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.history_tab, container, false);
-        visitList = (ListView) getActivity().findViewById(R.id.historyListList);
 
         dbs = new DatabaseOpenHelper(container.getContext());
         ArrayList<Travel> travels = dbs.getAllTravels();
         dbs.close();
 
         travelAdapter = new TravelListAdapter(getActivity(), R.layout.history_row, travels);
-        if (travelAdapter == null){
-            Log.v("Null: " , "TRUE");
-        }
-        if (visitList == null){
-            Log.v("list null: " , "true");
-        }
+
         setListAdapter(travelAdapter);
 
         travelAdapter.notifyDataSetChanged();

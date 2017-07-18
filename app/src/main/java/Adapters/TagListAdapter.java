@@ -91,11 +91,10 @@ public class TagListAdapter extends ArrayAdapter {
                 i.putExtra("tag_tag", finalHolder.tagText);
 
                 activity.startActivity(i);
-                activity.finish();
             }
         });
 
-        return super.getView(position, convertView, parent);
+        return row;
     }
 
     public class TagViewHolder{

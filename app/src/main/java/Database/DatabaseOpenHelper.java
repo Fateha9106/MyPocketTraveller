@@ -9,6 +9,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import Models.Travel;
 import Utilities.Variables;
@@ -196,5 +198,30 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
         dbs.close();
 
         return places;
+    }
+
+    public ArrayList<String> getAllTags(){
+
+        SQLiteDatabase dbs = this.getReadableDatabase();
+        Set<String> tagSet = new HashSet<>();
+        String query = "SELECT * FROM " + Variables.TAG_TABLE_NAME;
+        Cursor cursor = dbs.rawQuery(query, null);
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()){
+            tagSet.add(cursor.getString(cursor.getColumnIndex(Variables.TAG_TABLE_TAG)));
+            cursor.moveToNext();
+        }
+        cursor.close();
+        dbs.close();
+
+      ArrayList<String> tags = new ArrayList<>(tagSet);
+        return tags;
+    }
+
+    public ArrayList<Travel> getLookbackStories(){
+        ArrayList<Travel> lookBacks = new ArrayList<>();
+
+        return lookBacks;
     }
 }
