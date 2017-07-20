@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "851815342121",
+    "firebase_url": "https://pockettraveller-ca6d4.firebaseio.com",
+    "project_id": "pockettraveller-ca6d4",
+    "storage_bucket": "pockettraveller-ca6d4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:851815342121:android:17cccb8ac4dee959",
+        "android_client_info": {
+          "package_name": "project.enf.com.mypockettraveller"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "851815342121-vfp2fh30jrapstokd3uvii9j80g6r678.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJzLvjDLPoVJMib8Qwo2W0OgcW-MhSvXo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
