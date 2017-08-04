@@ -9,16 +9,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import Database.DatabaseOpenHelper;
 import Models.Travel;
 import Utilities.UtilityFunctions;
 
 public class ViewTravelDetails extends AppCompatActivity {
 
-    TextView travelTitle, travelDate, travelTags, travelDetails, travelLocation, travelDuration, travelRatings;
-    UtilityFunctions uf = new UtilityFunctions();
-    Button deleteButton;
-    FloatingActionButton editButton;
+    private  TextView travelTitle, travelDate, travelTags, travelDetails, travelLocation, travelDuration, travelRatings;
+    private UtilityFunctions uf = new UtilityFunctions();
+    private Button deleteButton;
+    private FloatingActionButton editButton;
+    private Travel travelData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +31,7 @@ public class ViewTravelDetails extends AppCompatActivity {
         initiate();
 
         final Travel travel = (Travel) getIntent().getExtras().getSerializable("data");
+        travelData = travel;
 
         travelTitle.setText(travel.getTitle());
         travelDate.setText(travel.getDateAdded());
@@ -48,7 +52,7 @@ public class ViewTravelDetails extends AppCompatActivity {
 
                 i.putExtras(mBundle);
 
-                startActivity(i);
+               startActivity(i);
 
                 ViewTravelDetails.this.finish();
             }
@@ -84,7 +88,12 @@ public class ViewTravelDetails extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.deleteMenu) {
-            return true;
+            DatabaseOpenHelper dbh= new DatabaseOpenHelper(getApplicationContext());
+            dbh.deleteTravel(travelData);
+            Intent i = new Intent(ViewTravelDetails.this, MainActivity.class);
+            Toast.makeText(this, "Travel has been removed", Toast.LENGTH_SHORT).show();
+            startActivity(i);
+            this.finish();
         }
 
         return super.onOptionsItemSelected(item);

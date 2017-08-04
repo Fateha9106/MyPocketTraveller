@@ -37,11 +37,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-maps:11.0.2'
     compile 'com.android.support:multidex:1.0.0'
     compile 'com.google.firebase:firebase-database:11.0.2'
-<<<<<<< HEAD
-    compile 'com.google.android.gms:play-services-gcm:8.3.0'
-=======
     compile 'com.google.android.gms:play-services-gcm:11.0.2'
->>>>>>> refs/remotes/origin/master
     compile 'com.google.code.findbugs:jsr305:2.0.1'
     testCompile 'junit:junit:4.12'
     compile project(path: ':backend', configuration: 'android-endpoints')

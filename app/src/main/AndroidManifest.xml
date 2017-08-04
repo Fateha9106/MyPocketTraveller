@@ -43,6 +43,7 @@
         <activity android:name=".ViewTravelDetails" />
         <activity android:name=".TaggedTravels" />
         <activity android:name=".SignInActivity" />
+        <activity android:name=".EditTravel"/>
     </application>
 
 </manifest>

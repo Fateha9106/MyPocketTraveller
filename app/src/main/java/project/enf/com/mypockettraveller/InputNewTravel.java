@@ -96,12 +96,13 @@ public class InputNewTravel extends AppCompatActivity {
         UtilityFunctions utility = new UtilityFunctions();
         Travel travel = new Travel();
 
-        travel.setTitle(title.getText().toString());
+        travel.setTitle(title.getText().toString().replace("'", ""));
         int ratingInt = (int) rating.getRating();
         travel.setRating(ratingInt);
-        travel.setDuration(utility.properRatingGet(duration.getText().toString()));
-        travel.setLocation(location.getText().toString());
-        travel.setDescription(description.getText().toString());
+        travel.setDuration(utility.properRatingGet(duration.getText().toString().replace("'", "")));
+        travel.setLocation(location.getText().toString().replace("'", ""));
+        travel.setDescription(description.getText().toString().replace("'", ""));
+
 
         //creating current date well formatted string
         DateFormat formatDate = new SimpleDateFormat("dd/MM/yyy");

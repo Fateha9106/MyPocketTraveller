@@ -32,7 +32,7 @@ public class EditTravel extends AppCompatActivity {
     private DatabaseOpenHelper dba;
     private Button placePickerButton;
     private static final int PLACE_PICKER_REQUEST = 1;
-
+    private Travel travel;
 
     private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(
             new LatLng(23.727677, 90.410553), new LatLng(23.727677, 90.410553));
@@ -41,9 +41,9 @@ public class EditTravel extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_travel);
 
-        Travel travel = (Travel) getIntent().getExtras().getSerializable("data");
+        this.travel = (Travel) getIntent().getExtras().getSerializable("data");
 
-        initialize();
+        initialize(travel);
         submit.setOnClickListener(new View.OnClickListener(){
 
             @Override
@@ -51,10 +51,15 @@ public class EditTravel extends AppCompatActivity {
 //
 //                FirebaseHandler fb = new FirebaseHandler();
 //                fb.addOnline(createTravel(), "test");
+                Travel updatedTravel = createTravel();
+               updateDatabase(updatedTravel);
+                Toast.makeText(EditTravel.this, "updated  database successfully", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(EditTravel.this, ViewTravelDetails.class);
 
-                addToDatabase();
-                Toast.makeText(EditTravel.this, "Added to database successfully", Toast.LENGTH_SHORT).show();
-                Intent i = new Intent(EditTravel.this, MainActivity.class);
+                Bundle mBundle = new Bundle();
+                mBundle.putSerializable("data", updatedTravel);
+                i.putExtras(mBundle);
+
                 startActivity(i);
                 EditTravel.this.finish();
             }
@@ -76,7 +81,7 @@ public class EditTravel extends AppCompatActivity {
 
     }
 
-    public void initialize(){
+    public void initialize(Travel travel){
         location = (EditText) findViewById(R.id.inputLocationInput);
         title = (EditText) findViewById(R.id.locationTitleInput);
         description = (EditText) findViewById(R.id.inputDescriptionDescription);
@@ -86,23 +91,32 @@ public class EditTravel extends AppCompatActivity {
         submit = (Button) findViewById(R.id.inputSubmitButton);
         placePickerButton = (Button) findViewById(R.id.inputPlacePickerOpenButton);
 
+
+        //putting data on places.
+        location.setText(travel.getLocation());
+        title.setText(travel.getTitle());
+        description.setText(travel.getDescription());
+        duration.setText(String.valueOf(travel.getDuration()));
+        tags.setText(new UtilityFunctions().getTagsFromList(travel.getTags()));
+        rating.setNumStars(travel.getRating());
+        tags.setEnabled(false);
     }
 
-    public void addToDatabase(){
+    public void updateDatabase(Travel tTravel){
         dba = new DatabaseOpenHelper(getApplicationContext());
-        dba.addTravel(createTravel());
+        dba.updateTravel(tTravel);
     }
 
     public Travel createTravel(){
         UtilityFunctions utility = new UtilityFunctions();
         Travel travel = new Travel();
-
-        travel.setTitle(title.getText().toString());
+        travel.setDatabaseID(travel.getDatabaseID());
+        travel.setTitle(title.getText().toString().replace("'", ""));
         int ratingInt = (int) rating.getRating();
         travel.setRating(ratingInt);
-        travel.setDuration(utility.properRatingGet(duration.getText().toString()));
-        travel.setLocation(location.getText().toString());
-        travel.setDescription(description.getText().toString());
+        travel.setDuration(utility.properRatingGet(duration.getText().toString().replace("'", "")));
+        travel.setLocation(location.getText().toString().replace("'", ""));
+        travel.setDescription(description.getText().toString().replace("'", ""));
 
         //creating current date well formatted string
         DateFormat formatDate = new SimpleDateFormat("dd/MM/yyy");

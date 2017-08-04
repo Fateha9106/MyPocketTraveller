@@ -8,7 +8,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -221,6 +224,61 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
 
     public ArrayList<Travel> getLookbackStories(){
         ArrayList<Travel> lookBacks = new ArrayList<>();
+
+        SQLiteDatabase dbs = this.getReadableDatabase();
+
+        //Getting the date properly to compare.. :P :P
+        DateFormat formatDate = new SimpleDateFormat("dd/MM/");
+        Date today = new Date();
+        String dayLike = formatDate.format(today).toString();
+
+
+        String query = "SELECT * FROM " + Variables.TRAVEL_LIST_TABLE_NAME + " WHERE " + Variables.TRAVEL_TABLE_DATE_ADDED + " LIKE '" + dayLike + "%'";
+
+        Cursor travelCursor = dbs.rawQuery(query, null);
+        travelCursor.moveToFirst();
+
+        while (!travelCursor.isAfterLast()){
+
+            int travel_id = travelCursor.getInt(travelCursor.getColumnIndex(Variables.TRAVEL_TABLE_ID));
+            String get_description = "SELECT * FROM description_table WHERE travel_id = '" + travel_id + "'";
+            Cursor descriptionCursor = dbs.rawQuery(get_description, null);
+            Log.v("Query gen: ", get_description);
+            Log.v("cursor size: ", String.valueOf(descriptionCursor.getCount()));
+            descriptionCursor.moveToFirst();
+            String description_text = descriptionCursor.getString(descriptionCursor.getColumnIndex(Variables.DESCRIPTION_TABLE_DESCRIPTION));
+//            String description_text = "Not found";
+            int rating = travelCursor.getInt(travelCursor.getColumnIndex(Variables.TRAVEL_TABLE_RATING));
+            String travel_title = travelCursor.getString(travelCursor.getColumnIndex(Variables.TRAVEL_TABLE_TITLE));
+            String travel_date_added = travelCursor.getString(travelCursor.getColumnIndex(Variables.TRAVEL_TABLE_DATE_ADDED));
+            int travel_duration = travelCursor.getInt(travelCursor.getColumnIndex(Variables.TRAVEL_TABLE_DURATION));
+            String travel_location = travelCursor.getString(travelCursor.getColumnIndex(Variables.TRAVEL_TABLE_LOCACTION));
+
+            //getting tags.
+            String get_tags = "SELECT * FROM " + Variables.TAG_TABLE_NAME + " WHERE " + Variables.TAG_TABLE_TRAVEL_ID + " = '" + travel_id + "'";
+            Cursor tagCursor = dbs.rawQuery(get_tags, null);
+            tagCursor.moveToFirst();
+            ArrayList<String> travel_tags = new ArrayList<>();
+            while (!tagCursor.isAfterLast()) {
+                travel_tags.add(tagCursor.getString(tagCursor.getColumnIndex(Variables.TAG_TABLE_TAG)));
+                tagCursor.moveToNext();
+            }
+
+            Travel travel = new Travel();
+            travel.setDatabaseID(travel_id);
+            travel.setDateAdded(travel_date_added);
+            travel.setDescription(description_text);
+            travel.setDuration(travel_duration);
+            travel.setRating(rating);
+            travel.setTags(travel_tags);
+            travel.setTitle(travel_title);
+            travel.setLocation(travel_location);
+
+            lookBacks.add(travel);
+            descriptionCursor.close();
+            tagCursor.close();
+            travelCursor.moveToNext();
+        }
 
         return lookBacks;
     }
