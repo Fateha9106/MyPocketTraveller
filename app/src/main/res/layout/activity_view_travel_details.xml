@@ -29,7 +29,7 @@
             android:layout_below="@id/travelDetailsTitle"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:textSize="20sp"
+            android:textSize="15sp"
             android:textStyle="italic"
             android:text="@string/date_model"
             android:textColor="@color/black"/>
@@ -37,12 +37,24 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textSize="15sp"
+            android:text="@string/place_model"
+            android:layout_below="@id/travelDetailsDate"
+            android:id="@+id/travelDetailsLocation"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/black"
+            android:textStyle="italic"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/duration_text"
             android:id="@+id/travelDetailsDuration"
             android:layout_centerHorizontal="true"
-            android:layout_below="@id/travelDetailsDate"
+            android:layout_below="@id/travelDetailsLocation"
             android:layout_marginTop="5dp"
-            android:textSize="20sp"
+            android:textSize="15sp"
             android:textStyle="normal"
             android:textColor="@color/black"/>
 

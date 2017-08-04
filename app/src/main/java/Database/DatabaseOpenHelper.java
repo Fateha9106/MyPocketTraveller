@@ -224,4 +224,24 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
 
         return lookBacks;
     }
+
+    public void updateTravel(Travel travel){
+        int dbId = travel.getDatabaseID();
+
+        SQLiteDatabase dbs = this.getWritableDatabase();
+
+        //update Statements
+        String updateTravelTable = "UPDATE " + Variables.TRAVEL_LIST_TABLE_NAME + " SET " + Variables.TRAVEL_TABLE_TITLE + " = '" + travel.getTitle() +
+                "', " + Variables.TRAVEL_TABLE_LOCACTION + " = '" + travel.getLocation() + "', " + Variables.TRAVEL_TABLE_RATING + " = '" + travel.getRating() +
+                "', " + Variables.TRAVEL_TABLE_DURATION + " = '" + travel.getDuration() + "' WHERE " + Variables.TRAVEL_TABLE_ID  + " = '" + travel.getDatabaseID() + "'";
+
+        Cursor cursor = dbs.rawQuery(updateTravelTable, null);
+        System.out.println ("Travel Table UPDATEd");
+
+        String updateDescription = "UPDATE " + Variables.DESCRIPTION_TABLE_NAME + " SET " + Variables.DESCRIPTION_TABLE_DESCRIPTION + " = '" + travel.getDescription()
+                + "' WHERE " + Variables.DESCRIPTION_TABLE_TRAVEL_ID + "= '" + travel.getDatabaseID() + "'";
+        cursor = dbs.rawQuery(updateDescription, null);
+        System.out.println("Description updated.");
+
+    }
 }
