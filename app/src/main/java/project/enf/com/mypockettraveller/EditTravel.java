@@ -1,22 +1,13 @@
 package project.enf.com.mypockettraveller;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.Toast;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import Database.DatabaseOpenHelper;
-import Database.FirebaseHandler;
-import Models.Travel;
-import Utilities.UtilityFunctions;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -25,7 +16,15 @@ import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
-public class InputNewTravel extends AppCompatActivity {
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import Database.DatabaseOpenHelper;
+import Models.Travel;
+import Utilities.UtilityFunctions;
+
+public class EditTravel extends AppCompatActivity {
 
     private EditText location, title, description, duration , tags;
     private RatingBar rating;
@@ -40,7 +39,9 @@ public class InputNewTravel extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_input_new_travel);
+        setContentView(R.layout.activity_edit_travel);
+
+        Travel travel = (Travel) getIntent().getExtras().getSerializable("data");
 
         initialize();
         submit.setOnClickListener(new View.OnClickListener(){
@@ -52,10 +53,10 @@ public class InputNewTravel extends AppCompatActivity {
 //                fb.addOnline(createTravel(), "test");
 
                 addToDatabase();
-                Toast.makeText(InputNewTravel.this, "Added to database successfully", Toast.LENGTH_SHORT).show();
-                Intent i = new Intent(InputNewTravel.this, MainActivity.class);
+                Toast.makeText(EditTravel.this, "Added to database successfully", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(EditTravel.this, MainActivity.class);
                 startActivity(i);
-                InputNewTravel.this.finish();
+                EditTravel.this.finish();
             }
         });
 
@@ -65,7 +66,7 @@ public class InputNewTravel extends AppCompatActivity {
                 try {
                     PlacePicker.IntentBuilder intentBuilder =  new PlacePicker.IntentBuilder();
                     intentBuilder.setLatLngBounds(BOUNDS_MOUNTAIN_VIEW);
-                    startActivityForResult(intentBuilder.build(InputNewTravel.this), PLACE_PICKER_REQUEST);
+                    startActivityForResult(intentBuilder.build(EditTravel.this), PLACE_PICKER_REQUEST);
 
                 } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
                     e.printStackTrace();
